@@ -9,7 +9,7 @@ export default class PostService{
         let params={}
         if(limit&&page) params = {_limit:limit, _page:page}
         // const response = await axios.get('http://127.0.0.1:3000/events'
-        const response = await $api.get('/events', {
+        const response = await $api.get('/get/department-events', {
             params
         })
         return response
@@ -19,14 +19,14 @@ export default class PostService{
         let params={}
         if(limit&&page) params = {_limit:limit, _page:page}
         // const response = await $api.get('http://127.0.0.1:3000/MyEvents', {
-            const response = await $api.get('/myevents', {
+            const response = await $api.get('/get/my-events', {
             params
         })
         return response
     }
     // Запрос на получение состояния паноптикума
     static async getAll() {
-        const response = await $api.get('/employees')
+        const response = await $api.get('/get/panopticon-data')
         return response
     }
         

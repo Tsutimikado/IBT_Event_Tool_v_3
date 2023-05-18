@@ -2,26 +2,23 @@
 import { BrowserRouter} from "react-router-dom";
 
 import AppRouter from "./components/AppRouter";
-import { AuthContext } from "./context";
-import { useEffect, useState } from "react";
+
+import { useContext, useEffect, useState } from "react";
+
+import { observer } from "mobx-react-lite";
+import { Context } from ".";
+import Loader from "./components/UI/Loader";
 
 
 function App() {
 
-   // useEffect(()=>{
-   //    if(localStorage.getItem('auth')){
-   //       setIsAuth(true)
-   //    }
-   // }, [])
-   // const [isAuth, setIsAuth] = useState(false)
 
    return (
-
-               <BrowserRouter>
-                  <AppRouter/>
-               </BrowserRouter>
+      <BrowserRouter>
+         <AppRouter/>
+      </BrowserRouter>
    )
 
 }
 
-export default App;
+export default observer( App);

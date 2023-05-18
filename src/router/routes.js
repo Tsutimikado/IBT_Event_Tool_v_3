@@ -1,4 +1,3 @@
-import EventJournal from "../pages/EventJournal"
 import RealTime from "../pages/RealTime"
 import Login from "../pages/Login"
 import Register from "../pages/Register"

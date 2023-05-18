@@ -51,12 +51,12 @@ function RealTime() {
                ?  <div className="flex justify-center mt-16"><Loader/></div>
                :  <div className="flex flex-col mt-9 max-w-[1025px] mx-auto px-16">
                      {/* <button className='border-2 border-teal-400 bg-teal-200 rounded-full w-fit p-3' onClick={toggleHere}>toggle</button> */}
-                     <h1 className="text-3xl font-bold text-sky-800 mb-1">ОТДЕЛ крутых шышек:</h1> {/* //Имя пользователя и остальные дынне будут в панели пользователя */}
+                     <h1 className="text-3xl font-bold text-sky-800 mb-1">Отдел Test Web:</h1> {/* //Имя пользователя и остальные дынне будут в панели пользователя */}
                      <EmpList list= {searchPosts}/>
                   </div>
             }
             {eventsError &&
-               <h1>ERROR {eventsError}</h1>   
+               <h1 className="mx-auto text-rose-500">ERROR {eventsError}</h1>   
             }
          </Main>
       </div>  

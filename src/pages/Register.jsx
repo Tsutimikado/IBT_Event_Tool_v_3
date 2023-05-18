@@ -8,56 +8,54 @@ import Loader from '../components/UI/Loader'
 import { useState, useMemo } from 'react'
 import ConfirmForm from '../components/UI/ConfirmForm'
 import AccountInfoForm from '../components/UI/AccountInfoForm'
+import $api from '../API/AxiosInstanse'
+import { useRegister } from '../hooks/useRegister'
 import { useContext } from 'react'
-import { AuthContext } from '../context'
-
+import { Context } from '..'
 
 const Register = () => {
 
    useEffect(() => {
       document.title = 'Регистрация - IBT Event Tool ';
    });
-   const{isAuth, setIsAuth} = useContext(AuthContext)
-   const [currentForm, setCurrentForm] = useState(0)
-   const [isLoading, setIsLoading] = useState(false)
+   const [currentForm, setCurrentForm] = useState(0);
+   const [isLoading, setIsLoading] = useState(false);
+   const {store} = useContext(Context);
    
-   const sendUserInfo = (event) => {
-      event.preventDefault();
-      setIsLoading(true)
-      setTimeout(()=>{
+   // const [fetchPersonalInfoError, setFetchPersonalInfoError] = useState('');
+
+   const [fetchPersonalInfo, fetchPersonalInfoError] = useRegister(setIsLoading ,async (lName, fName, mName, phone)=> {
+      await $api.post('auth/register/find-personal-data', {lName, fName, mName, phone})
+      .then(res=>{
          setCurrentForm(1);
-         setIsLoading(false)
-      },1500)
-   }
+      })
+   })
 
-   const confirmPhone = (event) => {
-      event.preventDefault();
-      setIsLoading(true)
-      setTimeout(()=>{
+   const [fetchCode, fetchCodeError] = useRegister(setIsLoading, async(code)=> {
+      await  $api.post('auth/register/get-code',{code})
+      .then(res=> {
          setCurrentForm(2);
-         setIsLoading(false)
-      },1500)
-   }
+      });
+   })
 
-   const sendAccountInfo = (event) => {
-      event.preventDefault();
-      setIsLoading(true)
-      setTimeout(()=>{
-         setIsAuth(true)
-         localStorage.setItem('auth', 'true')
-      },1500)
-   }
+   const [fetchAccountInfo, fetchAccountInfoError ] = useRegister(setIsLoading, async(username, password)=>{
+      store.register(username, password);
+      // await $api.post("/register/get-account-info", {username, password})
+      // .then(res=> {
+         
+      // })
+   })
 
    const forms = useMemo(() => {
       switch (currentForm) {
          case 0:
-            return <UserInfoForm send={sendUserInfo}/>;
+            return <UserInfoForm send={fetchPersonalInfo} error={fetchPersonalInfoError}/>;
          case 1:
-            return <ConfirmForm confirm={confirmPhone}/>;
+            return <ConfirmForm confirm={fetchCode} error={fetchCodeError}/>;
          case 2:
-            return <AccountInfoForm register={sendAccountInfo}/>;
+            return <AccountInfoForm register={fetchAccountInfo} error={fetchAccountInfoError}/>;
       }
-      }, [currentForm]);
+      }, [currentForm, fetchPersonalInfoError, fetchCodeError, fetchAccountInfoError]);
    return (
       <div className='bg-slate-100 h-screen pt-8'>
          <div className="flex flex-col items-center w-full bg-white mx-auto">

@@ -7,23 +7,21 @@ import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import { AuthContext } from '../context'
 import BigBtn from './UI/BigBtn'
+import { Context } from '..'
 
 
 
 const Header = ({children}) => {
 
-
+   const {store} = useContext(Context);
    const [modal, setModal] = useState(false)
    const cuurentPageClasses = 'font-semibold text-sky-400 text-xl mt-3 border-l-[3px] pl-1 border-tranparent w-full text-left bg-gradient-to-r from-sky-100 ';
    const pageClasses = 'font-semibold text-sky-700 text-xl mt-3 border-l-[3px] pl-1 border-sky-600 hover:border-l-[5px] hover:border-sky-400 w-full text-left '
 
    const logOut = () => {
-      setIsAuth(false)
-      localStorage.removeItem('auth');
+      store.logout();
    }
-
-   const{isAuth, setIsAuth} = useContext(AuthContext)
-
+   
    return (
       <div>
          <div className="container mx-auto flex flex-col items-center border-b-2 border-gray-300 h-[112px] relative">
@@ -38,14 +36,18 @@ const Header = ({children}) => {
          <div className="w-screen shadow-lg h-3 -mt-3"></div>
          <MyModal visible={modal} setVisible= {setModal}>
 
-            <div className="m-4 flex flex-col">
+            <div className="m-4 flex flex-col min-w-[395px]">
                <img src={userLogo} alt="" className=' w-16 mx-auto' />
-               <h3 className='text-2xl font-bold text-sky-800'>Музафаров Рахимбек Курамович</h3>
+               <h3 className='text-2xl font-bold text-sky-800 text-center'>{store.name}</h3>
                <BigBtn/>
                <div className="flex flex-col items-start mx-8">
                   <Link to='/my-events' className={`${(window.location.pathname!=='/panopticon' &&  window.location.pathname!=='/event-journal')?cuurentPageClasses :pageClasses }`}>Мои события</Link>
-                  <Link to='/panopticon' className={`${window.location.pathname==='/panopticon' ?cuurentPageClasses :pageClasses }`}>Паноптикум</Link>
-                  <Link to='/event-journal' className={`${window.location.pathname==='/event-journal' ?cuurentPageClasses :pageClasses }`}>Журнал событий</Link>
+                  {store.fullAccess &&
+                     <div className='flex flex-col w-full'>
+                     <Link to='/event-journal' className={`${window.location.pathname==='/event-journal' ?cuurentPageClasses :pageClasses }`}>Журнал событий</Link>
+                     <Link to='/panopticon' className={`${window.location.pathname==='/panopticon' ?cuurentPageClasses :pageClasses }`}>Паноптикум</Link>
+                     </div>}
+                  
                   <button onClick={logOut}className='font-semibold text-sky-700 text-xl mt-3 border-l-[3px] pl-1 border-sky-600 hover:border-l-[5px] hover:border-sky-400 w-full text-left '>Выход</button>
                   
                </div>

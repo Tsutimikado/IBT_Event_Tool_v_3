@@ -25,14 +25,6 @@ const EventJournal = ({eventAPI}) => {
    const lastElement = useRef()
    const observer = useRef()
 
-   // const pagesArray = useMemo(()=>{
-   //    let arr = []
-   //    for(let i = 1; i<= totalPages; i++) {
-   //       arr.push(i)
-   //    }
-   //    return arr
-   // }, [totalPages])
-      
    const [fetchEvents, isEventsLoading, eventsError] = useFetching(async (limit, page)=> {
       const response = await eventAPI(limit, page);
       setEvents([...events, ...response.data])
@@ -80,8 +72,6 @@ const EventJournal = ({eventAPI}) => {
          </Header>
          <Main>
 
-
-         
          <TableTool
                events = {searchEvents}
                searchByName = {e=>setNameQuery(e.target.value)} 
