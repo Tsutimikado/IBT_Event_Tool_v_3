@@ -13,7 +13,7 @@ export default class AuthService {
         
     }
 
-    static async register(username, password){
-        return $api.post('auth/register/get-account-info', {username, password})
+    static async register(username, password, server_info){
+        return $api.post('auth/register/get-account-info', {username, password, server_info})
     }
 }

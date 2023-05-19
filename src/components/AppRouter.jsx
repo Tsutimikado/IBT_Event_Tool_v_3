@@ -11,19 +11,18 @@ import Loader from './UI/Loader';
 const AppRouter = () => {
 
    const {store} = useContext(Context);
-   const [isLoading, setIsLoading] = useState(true);
+   // const [isLoading, setIsLoading] = useState(true);
 
    useEffect(()=>{
       
          try{
-            if(localStorage.getItem('access_token')){
-            store.checkAuth()}
+            
          }
          catch(e){
 
          }
          finally{
-            setIsLoading(false);
+            store.setIsLoading(false);
          }
 
    }, [])
@@ -31,7 +30,7 @@ const AppRouter = () => {
    
    const [isWorking, setIsWorking] = useState(false);
    return (
-      isLoading? <div className='flex justify-center mt-9'><Loader/></div>
+      store.isLoading? <div className='flex justify-center mt-9'><Loader/></div>
       :store.isAuth
          ?  <WorkContext.Provider value={{isWorking, setIsWorking}}>
                <Routes>

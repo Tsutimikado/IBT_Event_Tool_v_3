@@ -14,7 +14,8 @@ const ConfirmForm = ({confirm, error}) => {
 
    const sendCode = (event)=> {
       event.preventDefault();
-      confirm(code);
+      const code_id = sessionStorage.getItem('code_id');
+      confirm(code, code_id);
    }
 
    const trapChange = (e) => {

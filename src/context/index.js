@@ -4,6 +4,7 @@ import axios from "axios";
 import $api, { BASE_URL } from "../API/AxiosInstanse";
 
 import AuthService from "../API/AuthService";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const RegisterStep = createContext(0);
 export const WorkContext = createContext(true);
@@ -14,8 +15,11 @@ export default class Store {
     name = "test test";
     fullAccess = false;
     fullAccessGranted = ["Supervisor", "Admin"];
+    isLoading = true;
     constructor(){
         makeAutoObservable(this);
+        if(localStorage.getItem('access_token')){
+            this.checkAuth()}
     }
 
     setAuth(bool){
@@ -30,6 +34,9 @@ export default class Store {
         this.fullAccess = this.fullAccessGranted.includes(role);
     }
 
+    setIsLoading(bool){
+        this.isLoading = bool;
+    }
     async login(username, password){
         // try{
             const response = await AuthService.login(username, password);
@@ -38,6 +45,7 @@ export default class Store {
             this.setFullAccess(response.data.role);
             this.setName(response.data.name);
             this.setAuth(true);
+            
         // } catch (e) {
         //     console.log("Throwing error");
             
@@ -45,21 +53,21 @@ export default class Store {
         // }
     }
 
-    async register(username, password){
-        try{
-            const response = await AuthService.register(username, password);
-            
+    async register(username, password, server_info){
+        // try{
+            const response = await AuthService.register(username, password, server_info);
             localStorage.setItem('access_token', response.data.access_token);
+            this.setAuth(true);
             this.setFullAccess(response.data.role);
             this.setName(response.data.name);
-            this.setAuth(true);
-        }
-        catch(e){
+            
+        // }
+        // catch(e){
 
-            console.log(e);
-            return e;
-            console.log("Throwed error");
-        }
+        //     console.log(e);
+        //     // return e;
+        //     console.log("Throwed error");
+        // // }
     }
 
     async logout(){
@@ -83,7 +91,7 @@ export default class Store {
             this.setName(response.data.name);
             this.setAuth(true);
         } catch (e){
-            console.log(e);
+            // console.log(e);
         }
     }
 }

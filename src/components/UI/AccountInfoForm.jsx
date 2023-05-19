@@ -8,13 +8,15 @@ const AccountInfoForm = ({register, error}) => {
    const [username, setUsername] = useState('');
    const [password, setPassword] = useState('');
 
-   const sendAccountInfo = (event) => {
+   const sendAccountInfo = async (event) => {
       event.preventDefault();
-      try{
-         register(username, password);
-      }catch(e){
-         // console.log("Произошёл перехват в AccountInfoForm");
-      }
+      // try{
+         const server_info = sessionStorage.getItem('server_info');
+         await register(username, password, server_info);
+         
+      // }catch(e){
+      //    // console.log("Произошёл перехват в AccountInfoForm");
+      // }
       
    }   
 

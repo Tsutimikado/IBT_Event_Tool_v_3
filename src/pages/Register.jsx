@@ -27,19 +27,22 @@ const Register = () => {
    const [fetchPersonalInfo, fetchPersonalInfoError] = useRegister(setIsLoading ,async (lName, fName, mName, phone)=> {
       await $api.post('auth/register/find-personal-data', {lName, fName, mName, phone})
       .then(res=>{
+         sessionStorage.setItem("code_id", res.data.code_id);
+         sessionStorage.setItem("server_info", res.data.server_info);
          setCurrentForm(1);
       })
    })
 
-   const [fetchCode, fetchCodeError] = useRegister(setIsLoading, async(code)=> {
-      await  $api.post('auth/register/get-code',{code})
+   const [fetchCode, fetchCodeError] = useRegister(setIsLoading, async(code, code_id)=> {
+      await  $api.post('auth/register/get-code',{code, code_id})
       .then(res=> {
+         sessionStorage.removeItem('code_id');
          setCurrentForm(2);
       });
    })
 
-   const [fetchAccountInfo, fetchAccountInfoError ] = useRegister(setIsLoading, async(username, password)=>{
-      store.register(username, password);
+   const [fetchAccountInfo, fetchAccountInfoError ] = useRegister(setIsLoading, async(username, password, server_info)=>{
+      store.register(username, password, server_info);
       // await $api.post("/register/get-account-info", {username, password})
       // .then(res=> {
          

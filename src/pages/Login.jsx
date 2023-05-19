@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { CookieContext } from '../context'
 import { Context } from '..'
 import { observer } from 'mobx-react-lite'
+import { useNavigate } from 'react-router-dom'
 
 
 const Login = () => {
@@ -28,14 +29,16 @@ const Login = () => {
    });
 
    const {store} = useContext(Context);
+   const navigate = useNavigate();
 
    const login = (event)=> {
       event.preventDefault();
       try{
          store.login(usernameInp, passwordInp);
+         navigate("/my-events");
       }
       catch(e){
-         console.log("sadfasdfsdf");
+         // console.log("sadfasdfsdf");
          e.response.data!=undefined
          ?setError(e.response.data)
          :setError("Возникла непредвиденная ошибка");
